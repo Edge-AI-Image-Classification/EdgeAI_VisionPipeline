@@ -4,11 +4,13 @@ from torch.optim import SGD, Adam
 import torch
 from torchvision.models import resnet50
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # TESTING WITH A TEMPORARY RESNET MODEL
 model = resnet50()
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-optimizer = Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
+optimizer = SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-4)
+# optimizer = Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
 loss_fn = nn.CrossEntropyLoss()
 epochs = 1 # change this as we train the model
 
