@@ -6,7 +6,7 @@ class Block(nn.Module):
     def __init__(self, in_channels, intermediate_channels, out_channels, stride=1):
         super(Block, self).__init__()
 
-        # Building the bottleneck block
+        # Building the residual block
         self.building_block = nn.Sequential(
 
             # 1x1 convolution
@@ -24,7 +24,7 @@ class Block(nn.Module):
             nn.BatchNorm2d(out_channels) 
         )
 
-        # Downsample for residual connection if dimensions differ
+        # Downsample for residual connection if dimensions are different
         self.downsample = None
         if stride != 1 or in_channels != out_channels:
             self.downsample = nn.Sequential(
