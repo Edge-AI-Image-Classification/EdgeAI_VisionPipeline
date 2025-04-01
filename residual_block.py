@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 # Define the Residual Block
 class Block(nn.Module):
     def __init__(self, in_channels, intermediate_channels, out_channels, stride=1):
@@ -43,3 +44,6 @@ class Block(nn.Module):
         out += identity       # Add skip connection
         out = self.relu(out)  # Apply ReLU after adding residual
         return out
+    
+
+# He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 770-778).
