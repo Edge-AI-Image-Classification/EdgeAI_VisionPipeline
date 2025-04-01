@@ -1,6 +1,9 @@
 import numpy as np
 import os
+import torch
 from pycocotools.coco import COCO
+from skimage import transform, io
+from sklearn import preprocessing
 
 trainImgDir = "COCO/train2017"
 valImgDir = "COCO/val2017"
@@ -37,3 +40,28 @@ def extractLabels(obj, img_ids):
 
 trainData = extractLabels(trainObj,trainImgIds)
 valData = extractLabels(valObj,valImgIds)
+
+
+def transformImage(image_path, output_size=(224, 224)):
+    img = io.imread(image_path)
+    img = transform.resize(img, output_size)
+    img = img.transpose(2,0,1)
+    return img
+
+def createDataloader(image_label_pairs, output_size=(224, 224)):
+    X_list, y_list = [], []
+    for (fpath, lbl) in image_label_pairs:
+        img = transformImage(fpath, output_size=output_size)
+        X_list.append(img)
+        y_list.append(lbl)
+    
+    y = preprocessing.LabelEncoder().fit_transform(np.array(y_list))
+    X = torch.tensor(np.array(X_list, dtype=np.float32))
+    y = torch.tensor(y)
+    dataset = torch.utils.data.TensorDataset(X, y)
+    dataloader = torch.utils.data.DataLoader(dataset,batch_size=32)
+    return dataloader
+
+valDataloader = createDataloader(valData)
+trainDataloader = createDataloader(trainData)
+
