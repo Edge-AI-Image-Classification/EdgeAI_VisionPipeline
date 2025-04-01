@@ -1,7 +1,3 @@
-Below is an updated **README.md** that focuses on **ResNet-50–based image classification** trained on **COCO** for **edge device inference**, with a **“Future Expansion”** section outlining how you might later extend the project to **Faster R-CNN** object detection.
-
----
-
 # ResNet-50 Image Classification & Edge Deployment
 
 A practical pipeline demonstrating:
