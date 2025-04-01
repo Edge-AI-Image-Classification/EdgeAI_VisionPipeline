@@ -45,6 +45,8 @@ valData = extractLabels(valObj,valImgIds)
 def transformImage(image_path, output_size=(224, 224)):
     img = io.imread(image_path)
     img = transform.resize(img, output_size)
+    if img.ndim == 2:
+        img = np.stack([img] * 3, axis=-1)
     img = img.transpose(2,0,1)
     return img
 
