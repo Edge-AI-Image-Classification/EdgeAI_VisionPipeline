@@ -26,7 +26,17 @@ class ResNet50(nn.Module):
             Block(512, 128, 512, stride=1),
 
             #3: 6 Blocks
+            Block(512, 256, 1024, stride=2),
+            Block(1024, 256, 1024, stride=1),
+            Block(1024, 256, 1024, stride=1),
+            Block(1024, 256, 1024, stride=1),
+            Block(1024, 256, 1024, stride=1),
+            Block(1024, 256, 1024, stride=1),
+
             #4: 3 Blocks
+            Block(1024, 512, 2048, stride=2),
+            Block(2048, 512, 2048, stride=1),
+            Block(2048, 512, 2048, stride=1),
             
         )
 
