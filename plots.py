@@ -1,3 +1,10 @@
+import residual_block
+import resnet50
+import testing
+import training
+import validation
+
+from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
 #Variables that will be defined in other files
@@ -11,6 +18,9 @@ validation_accuracy = [80.1200, 82.1100, 83.0600, 83.1900]
 test_accuracy = [80.0700, 81.9900, 82.7500, 83.6100]
 
 epochs = [25, 40, 55, 70]
+
+label_true=0
+label_preds=0
 
 #Loss Plot----------------------------------------
 plt.plot(epochs, training_loss, label='training Loss', color='blue')
@@ -43,3 +53,6 @@ plt.grid(True)
 plt.show()
 
 #-------------------------------------------------
+
+#F-1, recall, precision---------------------------
+report = classification_report(label_true, label_preds, zero_division=0)

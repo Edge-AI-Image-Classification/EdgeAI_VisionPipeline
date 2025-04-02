@@ -1,5 +1,10 @@
+import residual_block
+import resnet50
+import testing
+import training
+import validation
+
 import torch
-#import other files here
 #import validation_loader, model, criterion, and epoch
 
 #pulling model from file
