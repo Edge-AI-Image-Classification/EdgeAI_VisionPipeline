@@ -6,18 +6,18 @@ from skimage import transform, io
 from sklearn import preprocessing
 
 ##### DATA FILE PATHS #####
-trainImgDir = "COCO/train2017"
-valImgDir = "COCO/val2017"
-trainAnnotations = "COCO/annotations/instances_train2017.json"
-valAnnotations = "COCO/annotations/instances_val2017.json"
+trainImgDir = "C:/repos/COCO/train2017"
+valImgDir = "C:/repos/COCO/val2017"
+trainAnnotations = "C:/repos/COCO/annotations/instances_train2017.json"
+valAnnotations = "C:/repos/COCO/annotations/instances_val2017.json"
 
 ##### GETTING DATA LOADED PROPERLY #####
 trainObj = COCO(trainAnnotations)
-trainImgIds = trainObj.getImgIds()
+trainImgIds = trainObj.getImgIds()[:1000]
 valObj = COCO(valAnnotations)
-valImgIds = valObj.getImgIds()
+valImgIds = valObj.getImgIds()[:1000]
 
-def extractLabels(obj, img_ids):
+def extractLabels(obj, img_ids, img_dir):
     # right now this does single-label
     data = []
     for img_id in img_ids:
@@ -34,15 +34,15 @@ def extractLabels(obj, img_ids):
         # RETRIEVES IMG FILE PATH
         img_info = obj.loadImgs([img_id])[0]
         file_name = img_info['file_name']
-        full_path = os.path.join(valImgDir, file_name)
+        full_path = os.path.join(img_dir, file_name)
         if os.path.isfile(full_path):
             # PAIRS IMG WITH LBL
             data.append((full_path, cat_name))
     return data
 
 
-trainData = extractLabels(trainObj,trainImgIds)
-valData = extractLabels(valObj,valImgIds)
+trainData = extractLabels(trainObj,trainImgIds, trainImgDir)
+valData = extractLabels(valObj,valImgIds, valImgDir)
 
 ##### PREPROCESS AND FORMAT DATA #####
 def transformImage(image_path, output_size=(224, 224)):
@@ -57,20 +57,25 @@ def transformImage(image_path, output_size=(224, 224)):
 def createDataloader(image_label_pairs, output_size=(224, 224)):
     X_list, y_list = [], []
     # RETRIEVE ACTUAL IMG
-    for (fpath, lbl) in image_label_pairs:
+    for idx, (fpath, lbl) in enumerate(image_label_pairs):
         img = transformImage(fpath, output_size=output_size)
         X_list.append(img)
         y_list.append(lbl)
+        if (idx + 1) % 100 == 0:
+            print(f"Processed {idx+1}/{len(image_label_pairs)} images")
+    
     # ENCODE LBLS
-    y = preprocessing.LabelEncoder().fit_transform(np.array(y_list))
-    # FORMAT AS DATALOADER
-    X = torch.tensor(np.array(X_list, dtype=np.float32))
-    y = torch.tensor(y)
-    dataset = torch.utils.data.TensorDataset(X, y)
-    dataloader = torch.utils.data.DataLoader(dataset,batch_size=32)
+    y_encoded = preprocessing.LabelEncoder().fit_transform(np.array(y_list))
+    X_tensor = torch.tensor(np.array(X_list, dtype=np.float32))
+    y_tensor = torch.tensor(y_encoded, dtype=torch.long)
+    dataset = torch.utils.data.TensorDataset(X_tensor, y_tensor)
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=True)
     return dataloader
 
 
 trainDataloader = createDataloader(trainData)
 valDataloader = createDataloader(valData)
+print(f"Loaded {len(trainData)} training images.")
+print(f"Loaded {len(valData)} validation images.")
+
 

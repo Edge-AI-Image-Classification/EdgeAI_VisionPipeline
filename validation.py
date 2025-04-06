@@ -1,36 +1,24 @@
-import residual_block
-import resnet50
-import testing
-import training
-import validation
-
 import torch
-#import validation_loader, model, criterion, and epoch
 
-#pulling model from file
-model.eval()
-
-#random values for testing
-validation_loss = 0.01
-validation_correct = 0.01
-validation_total = 0.01
-
-#----------------
-with torch.no_grad():
-    for images, labels in validation_loader:
-        images = images.to('cuda')
-        labels = labels.to('cuda')  
-
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-        validation_loss += loss.item()
-        predictions = (torch.sigmoid(outputs) > 0.5).float()  # For multilabel, modify threshold
-        validation_correct += (predictions == labels).sum().item() 
-        validation_total += labels.numel() 
-
-    print(f"Epoch [{epoch+1}/{num_epochs}], Validation Loss: {validation_loss/len(validation_loader)}")
-#----------------
-
-#validation printing
-validation_accuracy = validation_correct / validation_total * 100
-print(f" Validation Accuracy: {validation_accuracy}")
+def evaluate(dataloader, model, loss_fn, device):
+    model.eval()
+    total_loss = 0.0
+    numCorrect = 0
+    total = 0
+    
+    with torch.no_grad():
+        for batch_idx, (imgs, lbls) in enumerate(dataloader):
+            imgs = imgs.to(device)
+            lbls = lbls.to(device)
+            outputs = model(imgs)
+            loss = loss_fn(outputs, lbls)
+            total_loss += loss.item()
+            preds = torch.argmax(outputs, dim=1)
+            numCorrect += (preds == lbls).sum().item()
+            total += lbls.size(0)
+            if (batch_idx+1) % 10 == 0:
+                print(f"Validation Batch {batch_idx+1}/{len(dataloader)} processed.")
+            
+    avg_loss = total_loss / len(dataloader)
+    accuracy = numCorrect / total * 100
+    return avg_loss, accuracy

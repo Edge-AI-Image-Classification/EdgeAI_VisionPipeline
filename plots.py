@@ -1,9 +1,3 @@
-import residual_block
-import resnet50
-import testing
-import training
-import validation
-
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
