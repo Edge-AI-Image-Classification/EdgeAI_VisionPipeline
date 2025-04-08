@@ -159,7 +159,7 @@ The training code calls `evaluate(...)` from `validation.py` after each epoch to
 
 - The project logs **training** and **validation** accuracy for each epoch.  
 - Caltech101 is relatively small, so you can train quickly on CPU or GPU.  
-- If you want to visualize metrics, see the **plots.py** script (though it currently has hardcoded data).
+- If you want to visualize metrics, see the **plots.py** script.
 
 ---
 
