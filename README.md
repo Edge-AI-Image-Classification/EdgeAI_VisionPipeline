@@ -64,8 +64,6 @@ You have **seven** main Python files:
 └── dependencies.txt          # Dependencies needed for this project
 ```
 
----
-
 ## Installation
 
 ### Creating & Activating a Conda Environment
@@ -95,6 +93,13 @@ pip install -r dependencies.txt
 ```
 
 *(Make sure you are in the conda environment so packages are installed there.)*
+
+> **GPU/CUDA Note**  
+> If you’re running on **GPU** and want CUDA acceleration, ensure your **PyTorch** install is compatible with your installed CUDA driver. You might do:
+> ```bash
+> conda install pytorch torchvision cudatoolkit=<version> -c pytorch
+> ```
+> or install a **compatible wheel** (e.g., from PyPI) that matches your CUDA version. Installing via `pip install -r dependencies.txt` alone may not set up CUDA support automatically. You also need to have the appropriate **NVIDIA drivers** and **CUDA toolkit** for your system.
 
 **Typical Requirements** (already in `dependencies.txt`):
 - Python 3.9 (or similar)
