@@ -95,7 +95,7 @@ pip install -r dependencies.txt
 *(Make sure you are in the conda environment so packages are installed there.)*
 
 > **GPU/CUDA Note**  
-> If you’re running on **GPU** and want CUDA acceleration, ensure your **PyTorch** install is compatible with your installed CUDA driver. You might do:
+> If you’re running on **GPU** and want CUDA acceleration, ensure your **PyTorch** install is compatible with your installed CUDA driver. You can use the command:
 > ```bash
 > conda install pytorch torchvision cudatoolkit=<version> -c pytorch
 > ```
