@@ -1,81 +1,43 @@
-import numpy as np
-import os
 import torch
-from pycocotools.coco import COCO
-from skimage import transform, io
-from sklearn import preprocessing
+from torch.utils.data import DataLoader, random_split, Subset
+#Importing caltech101 dataset
+from torchvision.datasets import Caltech101
+from torchvision import transforms
 
-##### DATA FILE PATHS #####
-trainImgDir = "C:/repos/COCO/train2017"
-valImgDir = "C:/repos/COCO/val2017"
-trainAnnotations = "C:/repos/COCO/annotations/instances_train2017.json"
-valAnnotations = "C:/repos/COCO/annotations/instances_val2017.json"
+# Transformations 
+transform = transforms.Compose([
+    transforms.Grayscale(num_output_channels=3),
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406], 
+        std=[0.229, 0.224, 0.225]
+    )
+])
 
-##### GETTING DATA LOADED PROPERLY #####
-trainObj = COCO(trainAnnotations)
-trainImgIds = trainObj.getImgIds()[:1000]
-valObj = COCO(valAnnotations)
-valImgIds = valObj.getImgIds()[:1000]
+# Loading new dataset
+dataset = Caltech101(root='data', download=True, transform=transform)
 
-def extractLabels(obj, img_ids, img_dir):
-    # right now this does single-label
-    data = []
-    for img_id in img_ids:
-        ann_ids = obj.getAnnIds(imgIds=[img_id], iscrowd=None)
-        if len(ann_ids) == 0:
-            continue
-    
-        # GETS ANNOTATIONS - change for multilabel
-        ann = obj.loadAnns([ann_ids[0]])[0]
-        cat_id = ann['category_id']
-        cat_info = obj.loadCats([cat_id])[0] 
-        cat_name = cat_info['name']
+# #making a smaller randomized subset for quick testing. Comment out if not needed
+# testset_size = 100
+# indices = torch.randperm(len(dataset))[:testset_size]
+# testset = Subset(dataset, indices)
+# print(f"Using only {testset_size} images for a quick test run.")
 
-        # RETRIEVES IMG FILE PATH
-        img_info = obj.loadImgs([img_id])[0]
-        file_name = img_info['file_name']
-        full_path = os.path.join(img_dir, file_name)
-        if os.path.isfile(full_path):
-            # PAIRS IMG WITH LBL
-            data.append((full_path, cat_name))
-    return data
+# #training and validation on smaller subset. Comment out if not needed. 
+# train_size = int(0.8 * len(testset))
+# val_size   = len(testset) - train_size
+# train_dataset, val_dataset = random_split(testset, [train_size, val_size])
 
+# Splitting dataset in to an 80/20 split. 80 for training and 20 for validation
+train_size = int(0.8 * len(dataset))
+val_size = len(dataset) - train_size
+train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-trainData = extractLabels(trainObj,trainImgIds, trainImgDir)
-valData = extractLabels(valObj,valImgIds, valImgDir)
-
-##### PREPROCESS AND FORMAT DATA #####
-def transformImage(image_path, output_size=(224, 224)):
-    # PREPROCESS IMG
-    img = io.imread(image_path)
-    img = transform.resize(img, output_size)
-    if img.ndim == 2:
-        img = np.stack([img] * 3, axis=-1)
-    img = img.transpose(2,0,1)
-    return img
-
-def createDataloader(image_label_pairs, output_size=(224, 224)):
-    X_list, y_list = [], []
-    # RETRIEVE ACTUAL IMG
-    for idx, (fpath, lbl) in enumerate(image_label_pairs):
-        img = transformImage(fpath, output_size=output_size)
-        X_list.append(img)
-        y_list.append(lbl)
-        if (idx + 1) % 100 == 0:
-            print(f"Processed {idx+1}/{len(image_label_pairs)} images")
-    
-    # ENCODE LBLS
-    y_encoded = preprocessing.LabelEncoder().fit_transform(np.array(y_list))
-    X_tensor = torch.tensor(np.array(X_list, dtype=np.float32))
-    y_tensor = torch.tensor(y_encoded, dtype=torch.long)
-    dataset = torch.utils.data.TensorDataset(X_tensor, y_tensor)
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=True)
-    return dataloader
+print("Number of training images:", len(train_dataset))
+print("Number of validation images:", len(val_dataset))
 
 
-trainDataloader = createDataloader(trainData)
-valDataloader = createDataloader(valData)
-print(f"Loaded {len(trainData)} training images.")
-print(f"Loaded {len(valData)} validation images.")
-
-
+# Dataloaders for training and validation datasets
+trainDataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+valDataloader = DataLoader(val_dataset, batch_size=32, shuffle=False)

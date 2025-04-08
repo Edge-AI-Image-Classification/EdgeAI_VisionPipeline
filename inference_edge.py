@@ -6,7 +6,7 @@ import numpy as np
 from resnet50 import ResNet50
 
 def load_model(model_path, device):
-    model = ResNet50(num_classes=80)
+    model = ResNet50(num_classes=102)
     state_dict = torch.load(model_path, map_location=device)
     model.load_state_dict(state_dict)
     model.to(device)

@@ -5,7 +5,7 @@ from residual_block import Block
 
 # Define ResNet-50 
 class ResNet50(nn.Module):
-    def __init__(self, num_classes=80):
+    def __init__(self, num_classes=102):
         super(ResNet50, self).__init__()
         self.resnet_model = nn.Sequential(
 
@@ -42,7 +42,7 @@ class ResNet50(nn.Module):
             # Average Pooling and FC Layer
             nn.AdaptiveAvgPool2d((1, 1)), # Reduce each channel to target size(1,1)
             nn.Flatten(),
-            nn.Linear(2048, 80)    # 80 classes for COCO dataset
+            nn.Linear(2048, 102)    # 80 classes for COCO dataset
             
         )
 
