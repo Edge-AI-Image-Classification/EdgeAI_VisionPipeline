@@ -122,9 +122,9 @@ def main():
         # -- Measure device stats (comment/uncomment based on your hardware) --
 
         # 1) Jetson tegrastats
-        #stats_jetson = get_tegrastats_snapshot()
-        #if stats_jetson["cpu_usage"] is not None:
-        #    print(f"[JETSON] CPU Usage: {stats_jetson['cpu_usage']:.2f}%, GPU Usage: {stats_jetson['gpu_usage']:.2f}%")
+        stats_jetson = get_tegrastats_snapshot()
+        if stats_jetson["cpu_usage"] is not None:
+           print(f"[JETSON] CPU Usage: {stats_jetson['cpu_usage']:.2f}%, GPU Usage: {stats_jetson['gpu_usage']:.2f}%")
 
         # 2) Raspberry Pi or general Linux psutil
         #stats_psutil = get_psutil_stats()
