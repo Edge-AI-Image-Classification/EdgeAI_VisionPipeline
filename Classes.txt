@@ -1,0 +1,103 @@
+ 0: BACKGROUND_Google - this one is excluded from the list of predictions. It's only used for training. 
+ 1: Faces
+ 2: Faces_easy - this one is excluded from the list of predictions. It's only used for training.
+ 3: Leopards
+ 4: Motorbikes
+ 5: accordion
+ 6: airplanes
+ 7: anchor
+ 8: ant
+ 9: barrel
+10: bass
+11: beaver
+12: binocular
+13: bonsai
+14: brain
+15: brontosaurus
+16: buddha
+17: butterfly
+18: camera
+19: cannon
+20: car_side
+21: ceiling_fan
+22: cellphone
+23: chair
+24: chandelier
+25: cougar_body
+26: cougar_face
+27: crab
+28: crayfish
+29: crocodile
+30: crocodile_head
+31: cup
+32: dalmatian
+33: dollar_bill
+34: dolphin
+35: dragonfly
+36: electric_guitar
+37: elephant
+38: emu
+39: euphonium
+40: ewer
+41: fern
+42: fire_engine
+43: flamingo
+44: flamingo_head
+45: garfield
+46: gerenuk
+47: gramophone
+48: grand_piano
+49: hawksbill
+50: headphone
+51: hedgehog
+52: helicopter
+53: ibis
+54: inline_skate
+55: joshua_tree
+56: kangaroo
+57: ketch
+58: lamp
+59: laptop
+60: llama
+61: lobster
+62: lotus
+63: mandolin
+64: mayfly
+65: menorah
+66: metronome
+67: minaret
+68: mushroom
+69: octopus
+70: okapi
+71: pagoda
+72: panda
+73: pigeon
+74: pizza
+75: platypus
+76: pyramid
+77: revolver
+78: rhino
+79: rooster
+80: saxophone
+81: schooner
+82: scissors
+83: scorpion
+84: sea_horse
+85: snoopy
+86: soccer_ball
+87: stapler
+88: starfish
+89: stegosaurus
+90: stop_sign
+91: strawberry
+92: sunflower
+93: tick
+94: trilobite
+95: umbrella
+96: watch
+97: water_lilly
+98: wheelchair
+99: wild_cat
+100: windsor_chair
+101: wrench
+102: yin_yang
