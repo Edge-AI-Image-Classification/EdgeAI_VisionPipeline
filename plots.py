@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import json
 
-def plotmetrics(logs_path="plottinglogs.json"):
+def plotmetrics(logs_path="plottinglogs200.json"):
     # 1. Load JSON logs
     with open(logs_path, "r") as f:
         logs = json.load(f)
@@ -19,7 +19,7 @@ def plotmetrics(logs_path="plottinglogs.json"):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Loss Over Epochs')
-    plt.xticks(epochs)
+    plt.xticks(ticks=range(0, 200, 10), rotation=45)
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -31,10 +31,10 @@ def plotmetrics(logs_path="plottinglogs.json"):
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy (%)')
     plt.title('Accuracy Over Epochs')
-    plt.xticks(epochs)
+    plt.xticks(ticks=range(0, 200, 10), rotation=45)
     plt.legend()
     plt.grid(True)
     plt.show()
 
 if __name__ == "__main__":
-    plotmetrics("plottinglogs.json")
+    plotmetrics("plottinglogs200.json")
