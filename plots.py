@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import json
 
-def plotmetrics(logs_path="plottinglogs.json"):
+def plotmetrics(logs_path="plottinglogs200.json"):
     # 1. Load JSON logs
     with open(logs_path, "r") as f:
         logs = json.load(f)
@@ -37,4 +37,4 @@ def plotmetrics(logs_path="plottinglogs.json"):
     plt.show()
 
 if __name__ == "__main__":
-    plotmetrics("plottinglogs.json")
+    plotmetrics("plottinglogs200.json")
