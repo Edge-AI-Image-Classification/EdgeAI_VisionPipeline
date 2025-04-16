@@ -1,4 +1,4 @@
-# ResNet-50 Image Classification & Edge Deployment
+# ResNet-50 Based Image Classification on Edge Devices
 
 A practical pipeline demonstrating:
 
