@@ -107,7 +107,6 @@ pip install -r dependencies.txt
 - OpenCV (e.g., `opencv-python`)
 - Matplotlib (for plotting)
 - scikit-learn (for classification reports)
-- Others if needed (e.g., TQDM, etc.)
 
 ---
 
